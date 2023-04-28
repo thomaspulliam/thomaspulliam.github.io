@@ -117,7 +117,8 @@
 				console.log("getting customer details");
 				const getCustomerDetails = () => {
 					customerDetails.then(data => {
-						console.log("oooo");
+						console.log("oooo data oooo");
+						console.log(data);
 						if (data.statusCode === 200) {
 							var details = {
 								'un': data.body.username,
