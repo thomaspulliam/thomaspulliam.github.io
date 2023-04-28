@@ -66,7 +66,7 @@
 		return "";
 	}
 
-/*
+
 	function custAuth(details) {
 		console.log(" ***** inside custAuth ***** ");
 		var formBody = [];
@@ -95,7 +95,7 @@
 			location.reload();
 		})
 	}
-	*/
+	
 	var isauth = false;
 	isauth = getCookie("isIgAuthenticated");
 	console.log(isauth);
@@ -162,30 +162,9 @@
 						
 					});
 				};
-			getCustomerDetails();
-
-			function custAuth(details){
-				var formBody = [];
-				for (var property in details) {
-					var encodedKey = encodeURIComponent(property);
-					var encodedValue = encodeURIComponent(details[property]);
-					formBody.push(encodedKey + "=" + encodedValue);
-				}
-				formBody = formBody.join("&");
-				fetch('https://infinityglobal-dev.appiancloud.com/suite/auth?appian_environment=tempo', {
-					method: 'POST',
-					mode: "no-cors",
-						credentials: `include`,
-					headers: {
-					'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-					},
-					body: formBody
-				})
-				.then((response) => {
-					setCookie("isIgAuthenticated", true, 7);
-					location.reload();
-				})
-		    }
+				console.log("----calling getCustomerDetails ------");
+				getCustomerDetails();
+				console.log("000000 done calling getCustomerDetails 000000");
     });
   } catch (err) {
       
