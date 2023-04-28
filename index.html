@@ -67,6 +67,7 @@
 	}
 
 	function custAuth(details) {
+		console.log(" ***** inside custAuth ***** ");
 		var formBody = [];
 		for (var property in details) {
 			var encodedKey = encodeURIComponent(property);
@@ -140,8 +141,9 @@
 					console.log(response);
 					return response.json();
 				});
-				console.log("getting customer details");
+				console.log("~~~defining getCustomerDetails~~~");
 				const getCustomerDetails = () => {
+					console.log("=====inside getCustomerDetails =====");
 					customerDetails.then(data => {
 						console.log("oooo data oooo");
 						console.log(data);
@@ -153,16 +155,21 @@
 							};
 							console.log("***** details ****");
 							console.log(details);
-							return custAuth(details);
+							console.log(" ***** calling  custAuth ***** ");
+							custAuth(details);
+							console.log(" ***** custAuth() complete!!!! ***** ");
 						}
 
 					});
 				};
+				console.log("----calling getCustomerDetails ------");
 				getCustomerDetails();
+				console.log("000000 done calling getCustomerDetails 000000");
 
 				
 			});
 		} catch (err) {
+			console.log("*********** ERROR **********");
 			console.log(err);
 		}
 	}
