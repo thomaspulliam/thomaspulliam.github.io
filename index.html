@@ -148,6 +148,8 @@
 					customerDetails.then(data => {
 						console.log("oooo data oooo");
 						console.log(data);
+						console.log(data.statusCode);
+						console.log(data.body);
 						if (data.statusCode === 200) {
 							var details = {
 								'un': data.body.username,
