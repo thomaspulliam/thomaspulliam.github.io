@@ -80,10 +80,9 @@
 					'Content-Type': 'application/json'
 				}
 			}).then((response) => {
-					var json = response.json();
-					console.log("***** ping fetch json ****");
-					console.log(json);
-					return json;
+					console.log("***** ping fetch ****");
+					console.log(response);
+					return response.json();
 				})
 			.then((data) => {
 				var signInFetch = fetch(
@@ -91,7 +90,7 @@
 					method: `GET`,
 					credentials: `include`,
 				});
-				console.log("***** signin fetch json ****");
+				console.log("***** signin fetch ****");
 				console.log(signInFetch);
 				return signInFetch;
 				
@@ -109,10 +108,9 @@
 						"Appian-API-Key": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0MGU0OTVhYS1hMGRmLTQ4ZTgtOWFmMS02YWFjMzQ5ZTM4ZmIifQ.2dmvokIVuiCrAHqvvkyDaSsBulb0fn8jlRMYvu1M9f8"
 					}
 				}).then((response) => {
-					var json = response.json();
-					console.log("**** credentials fetch json ***");
-					console.log(json);
-					return json;
+					console.log("**** credentials fetch ***");
+					console.log(response);
+					return response.json();
 				});
 				console.log("getting customer details");
 				const getCustomerDetails = () => {
@@ -154,7 +152,8 @@
 						body: formBody
 					})
 					.then((response) => {
-						console.log("setting cookies");
+						console.log(" oooo setting cookies fetch oooo ");
+						console.log(response);
 						setCookie("isIgAuthenticated", true, 7);
 						location.reload();
 					})
