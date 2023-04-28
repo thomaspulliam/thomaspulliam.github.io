@@ -2,7 +2,7 @@
 <html>
   <head>
     <!-- This script loads the Appian Web components; change it to your Appian server's domain -->
-     <script src="https://infinityglobal-dev.appiancloud.com/suite/tempo/ui/sail-client/embeddedBootstrap.nocache.js" id="appianEmbedded"></script>
+     <script src="https://orders-dev.infinityglobal.com/suite/tempo/ui/sail-client/embeddedBootstrap.nocache.js" id="appianEmbedded"></script>
 	 
 	 
   </head>
@@ -21,7 +21,7 @@
 		const sid = urlParams.get('sid')
 		console.log(sid);
 		
-		let recordStart = "https://infinityglobal-dev.appiancloud.com/suite/tempo/records/item/";
+		let recordStart = "https://orders-dev.infinityglobal.com/suite/tempo/records/item/";
 		let recordEnd = "/view/summary";
 		 
 		let recordURL = recordStart.concat(sid, recordEnd);
@@ -75,7 +75,7 @@ try {
 		console.log(" ***** ping fetch ***** ");
 		
 		fetch(
-			"https://infinityglobal-dev.appiancloud.com/suite/cors/ping?cv=2",
+			"https://orders-dev.infinityglobal.com/suite/cors/ping?cv=2",
 			{
 			method: `GET`,
 			credentials: `include`,
@@ -89,7 +89,7 @@ try {
 			 
 			console.log(" ***** signin fetch ***** ");
 			return fetch(
-				"https://infinityglobal-dev.appiancloud.com/suite/cors/wc?cv=2&signin=native",
+				"https://orders-dev.infinityglobal.com/suite/cors/wc?cv=2&signin=native",
 				{
 					method: `GET`,
 					credentials: `include`,
@@ -141,7 +141,7 @@ try {
 					formBody.push(encodedKey + "=" + encodedValue);
 				}
 				formBody = formBody.join("&");
-				fetch('https://infinityglobal-dev.appiancloud.com/suite/auth?appian_environment=tempo', {
+				fetch('https://orders-dev.infinityglobal.com/suite/auth?appian_environment=tempo', {
 					method: 'POST',
 					mode: "no-cors",
 						credentials: `include`,
