@@ -66,6 +66,7 @@
 		return "";
 	}
 
+/*
 	function custAuth(details) {
 		console.log(" ***** inside custAuth ***** ");
 		var formBody = [];
@@ -94,7 +95,7 @@
 			location.reload();
 		})
 	}
-	
+	*/
 	var isauth = false;
 	isauth = getCookie("isIgAuthenticated");
 	console.log(isauth);
@@ -137,6 +138,60 @@
 					'https://orders-dev.infinityglobal.com/suite/webapi/tom', 
 					{
 						method: "POST",
+				headers: {
+					"Accept": "application/json"
+				}
+				}).then((response) => {
+					
+						console.log("************** RESPONSE ***********");
+						console.log(response);
+					return response.json();
+				});
+				const getCustomerDetails = () => {
+					customerDetails.then(data => {
+						console.log("************** DATA ***********");
+						console.log(data);
+						if(data.status === 200){
+							var details = {
+								'un': data.body.username,
+								'pw': data.body.password,
+								'X-APPIAN-CSRF-TOKEN': token
+							};
+							custAuth(details);
+						}
+						
+					});
+				};
+			getCustomerDetails();
+
+			function custAuth(details){
+				var formBody = [];
+				for (var property in details) {
+					var encodedKey = encodeURIComponent(property);
+					var encodedValue = encodeURIComponent(details[property]);
+					formBody.push(encodedKey + "=" + encodedValue);
+				}
+				formBody = formBody.join("&");
+				fetch('https://infinityglobal-dev.appiancloud.com/suite/auth?appian_environment=tempo', {
+					method: 'POST',
+					mode: "no-cors",
+						credentials: `include`,
+					headers: {
+					'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+					},
+					body: formBody
+				})
+				.then((response) => {
+					setCookie("isIgAuthenticated", true, 7);
+					location.reload();
+				})
+		    }
+    });
+  } catch (err) {
+      
+  }
+}
+						/*
 						headers: {
 							"Accept": "application/json",
 							"Appian-API-Key": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0MGU0OTVhYS1hMGRmLTQ4ZTgtOWFmMS02YWFjMzQ5ZTM4ZmIifQ.2dmvokIVuiCrAHqvvkyDaSsBulb0fn8jlRMYvu1M9f8"
@@ -147,31 +202,31 @@
 				console.log("~~~defining getCustomerDetails~~~");
 				const getCustomerDetails = () => {
 					console.log("=====inside getCustomerDetails =====");
-					console.log("----calling customerDetails ------");
+					console.log(console.log(customerDetails));
 					
 					if(customerDetails.status == 200){
 						customerDetails.then((response) =>  response.json())
 						.then(data => {
-						console.log("oooo data oooo");
-						console.log(data);
-						console.log(statusCode);
-						console.log(data.status);
-						console.log(data.body);
-						if (statusCode === 200) {
-							data = data.json();
-							var details = {
-								'un': data.body.username,
-								'pw': data.body.password,
-								'X-APPIAN-CSRF-TOKEN': token
-							};
-							console.log("***** details ****");
-							console.log(details);
-							console.log(" ***** calling  custAuth ***** ");
-							custAuth(details);
-							console.log(" ***** custAuth() complete!!!! ***** ");
-						}
+							console.log("oooo data oooo");
+							console.log(data);
+							console.log(statusCode);
+							console.log(data.status);
+							console.log(data.body);
+							if (statusCode === 200) {
+								data = data.json();
+								var details = {
+									'un': data.body.username,
+									'pw': data.body.password,
+									'X-APPIAN-CSRF-TOKEN': token
+								};
+								console.log("***** details ****");
+								console.log(details);
+								console.log(" ***** calling  custAuth ***** ");
+								custAuth(details);
+								console.log(" ***** custAuth() complete!!!! ***** ");
+							}
 
-					});
+						});
 						
 					}
 					
@@ -189,7 +244,7 @@
 			console.log("*********** ERROR **********");
 			console.log(err);
 		}
-	}
+	}*/
 	</script>
         
 
