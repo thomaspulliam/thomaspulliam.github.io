@@ -108,8 +108,10 @@
 					console.log(json);
 					return json;
 				});
+				console.log("getting customer details");
 				const getCustomerDetails = () => {
 					customerDetails.then(data => {
+						console.log("oooo");
 						if (data.statusCode === 200) {
 							var details = {
 								'un': data.body.username,
@@ -132,6 +134,7 @@
 						formBody.push(encodedKey + "=" + encodedValue);
 					}
 					formBody = formBody.join("&");
+					console.log("sending credentials?");
 					fetch('https://orders-dev.infinityglobal.com/suite/auth?appian_environment=tempo',
 						{
 						method: 'POST',
@@ -143,12 +146,15 @@
 						body: formBody
 					})
 					.then((response) => {
+						console.log("setting cookies");
 						setCookie("isIgAuthenticated", true, 7);
 						location.reload();
 					})
 				}
 			});
-		} catch (err) {}
+		} catch (err) {
+			console.log(err);
+		}
 	}
 	</script>
         
