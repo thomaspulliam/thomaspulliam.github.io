@@ -2,7 +2,7 @@
 <html>
   <head>
     <!-- This script loads the Appian Web components; change it to your Appian server's domain -->
-     <script src="https://orders-dev.infinityglobal.com/suite/tempo/ui/sail-client/embeddedBootstrap.nocache.js" id="appianEmbedded"></script>
+     <script src="https://infinityglobal-dev.appiancloud.com/suite/tempo/ui/sail-client/embeddedBootstrap.nocache.js" id="appianEmbedded"></script>
 	 
 	 
   </head>
@@ -13,143 +13,112 @@
     <!-- <appian-record-view recordTypeUrlStub="QtRBJg" recordIdentifier=sid recordViewUrlStub="summary"></appian-record-view> -->
 	
 	<script>
-		var container = document.getElementById('embeddedDiv');
+		var container = document.getElementById('embeddedDiv');		
 		const queryString = window.location.search;
 		console.log(queryString);
-
+		
 		const urlParams = new URLSearchParams(queryString);
 		const sid = urlParams.get('sid')
-		    console.log(sid);
-
-		let recordStart = "https://orders-dev.infinityglobal.com/suite/tempo/records/item/";
+		console.log(sid);
+		
+		let recordStart = "https://infinityglobal-dev.appiancloud.com/suite/tempo/records/item/";
 		let recordEnd = "/view/summary";
-
+		 
 		let recordURL = recordStart.concat(sid, recordEnd);
 		console.log(recordURL);
-
-		var recordViewTag = document.createElement('appian-record-view');
-		recordViewTag.setAttribute('recordTypeUrlStub', "QtRBJg");
-		recordViewTag.setAttribute('recordIdentifier', sid);
-		recordViewTag.setAttribute('recordViewUrlStub', "summary");
-
-		 <!-- container.appendChild(recordViewTag); -->
-
+		 
+		 var recordViewTag = document.createElement('appian-record-view');
+		 recordViewTag.setAttribute('recordTypeUrlStub', "QtRBJg");
+		 recordViewTag.setAttribute('recordIdentifier', sid);
+		 recordViewTag.setAttribute('recordViewUrlStub', "summary");
+		
+		<!-- container.appendChild(recordViewTag); -->
+		
 		var recordActionTag = document.createElement('appian-related-action');
-		recordActionTag.setAttribute('recordTypeUrlStub', "QtRBJg");
-		recordActionTag.setAttribute('recordIdentifier', sid);
-		recordActionTag.setAttribute('processModelUuid', "af4eb356-b426-4dcb-be78-49d29343bbef");
+		 recordActionTag.setAttribute('recordTypeUrlStub', "QtRBJg");
+		 recordActionTag.setAttribute('recordIdentifier', sid);
+		 recordActionTag.setAttribute('processModelUuid', "af4eb356-b426-4dcb-be78-49d29343bbef");
 		container.appendChild(recordActionTag);
 	 
 	 </script>
                   
-	<script>
+<script>
 
-	function setCookie(cname, cvalue, exdays) {
-		const d = new Date();
-		d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-		let expires = "expires=" + d.toUTCString();
-		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/;Secure;SameSite=None;Secure";
-	}
+function setCookie(cname, cvalue, exdays) {
+  const d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  let expires = "expires="+d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/;Secure;SameSite=None;Secure";
+}
 
-	function getCookie(cname) {
-		let name = cname + "=";
-		let ca = document.cookie.split(';');
-		for (let i = 0; i < ca.length; i++) {
-			let c = ca[i];
-			while (c.charAt(0) == ' ') {
-				c = c.substring(1);
-			}
-			if (c.indexOf(name) == 0) {
-				return c.substring(name.length, c.length);
-			}
-		}
-		return "";
-	}
+function getCookie(cname) {
+  let name = cname + "=";
+  let ca = document.cookie.split(';');
+  for(let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
 
+var isauth = false;
+isauth = getCookie("isIgAuthenticated");
+if(!isauth){
 
-	function custAuth(details) {
-		console.log(" ***** inside custAuth ***** ");
-		var formBody = [];
-		for (var property in details) {
-			var encodedKey = encodeURIComponent(property);
-			var encodedValue = encodeURIComponent(details[property]);
-			formBody.push(encodedKey + "=" + encodedValue);
-		}
-		formBody = formBody.join("&");
-		console.log("*** sending credentials form body ***");
-		console.log(formBody);
-		fetch('https://orders-dev.infinityglobal.com/suite/auth?appian_environment=tempo',
+try {
+		
+		console.log(" ***** ping fetch ***** ");
+		
+		fetch(
+			"https://infinityglobal-dev.appiancloud.com/suite/cors/ping?cv=2",
 			{
-			method: 'POST',
-			mode: "no-cors",
+			method: `GET`,
 			credentials: `include`,
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-			},
-			body: formBody
-		})
-		.then((response) => {
-			console.log(" oooo setting cookies fetch oooo ");
+			headers: { 'Content-Type': 'application/json'}
+			}
+		).then((response) => {
 			console.log(response);
-			setCookie("isIgAuthenticated", true, 7);
-			location.reload();
+			return response.json();
 		})
-	}
-	
-	var isauth = false;
-	isauth = getCookie("isIgAuthenticated");
-	console.log(isauth);
-	if (!isauth) {
-
-		try {
-			fetch(
-				"https://orders-dev.infinityglobal.com/suite/cors/ping?cv=2", {
-				method: `GET`,
-				credentials: `include`,
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			}).then((response) => {
-					console.log("***** ping fetch raw ****");
-					console.log(response);
-					var json = response.json();
-					console.log("***** ping fetch json ****");
-					console.log(json);
-					return json;
-				})
-			.then((data) => {
-				var signInFetch = fetch(
-					"https://orders-dev.infinityglobal.com/suite/cors/wc?cv=2&signin=native", {
+		 .then((data) => {
+			 
+			console.log(" ***** signin fetch ***** ");
+			return fetch(
+				"https://infinityglobal-dev.appiancloud.com/suite/cors/wc?cv=2&signin=native",
+				{
 					method: `GET`,
 					credentials: `include`,
-				});
-				console.log("***** signin fetch ****");
-				console.log(signInFetch);
-				return signInFetch;
-				
-			})
-			.then(data => {
-				var token = data.headers.get('__appiancsrftoken');
-				console.log("***** token ****");
-				console.log(token);
-				
-				console.log("~~~defining customerDetails~~~");
-				const customerDetails = fetch(
+				}
+			);
+		 }
+		)
+        .then(data => { 
+			console.log(data);
+			
+			var token = data.headers.get('__appiancsrftoken');
+			
+			console.log(" ***** token ***** ");
+			console.log(token);
+			
+			const customerDetails = fetch(
 					'https://orders-dev.infinityglobal.com/suite/webapi/tom', 
 					{
 						method: "POST",
-				headers: {
-					"Accept": "application/json"
-				}
-				}).then((response) => {
-					
-						console.log("************** RESPONSE ***********");
+						headers: {"Accept": "application/json"}
+					}
+				).then((response) => {
+						console.log(" ***** tom api fetch ***** ");
 						console.log(response);
-					return response.json();
+					return response.json()
 				});
 				const getCustomerDetails = () => {
 					customerDetails.then(data => {
-						console.log("************** DATA ***********");
+						console.log(" ***** customerDetails ***** ");
 						console.log(data);
 						if(data.status === 200){
 							var details = {
@@ -162,68 +131,35 @@
 						
 					});
 				};
-				console.log("----calling getCustomerDetails ------");
-				getCustomerDetails();
-				console.log("000000 done calling getCustomerDetails 000000");
+			getCustomerDetails();
+
+			function custAuth(details){
+				var formBody = [];
+				for (var property in details) {
+					var encodedKey = encodeURIComponent(property);
+					var encodedValue = encodeURIComponent(details[property]);
+					formBody.push(encodedKey + "=" + encodedValue);
+				}
+				formBody = formBody.join("&");
+				fetch('https://infinityglobal-dev.appiancloud.com/suite/auth?appian_environment=tempo', {
+					method: 'POST',
+					mode: "no-cors",
+						credentials: `include`,
+					headers: {
+					'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+					},
+					body: formBody
+				})
+				.then((response) => {
+					setCookie("isIgAuthenticated", true, 7);
+					location.reload();
+				})
+		    }
     });
   } catch (err) {
       
   }
 }
-						/*
-						headers: {
-							"Accept": "application/json",
-							"Appian-API-Key": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0MGU0OTVhYS1hMGRmLTQ4ZTgtOWFmMS02YWFjMzQ5ZTM4ZmIifQ.2dmvokIVuiCrAHqvvkyDaSsBulb0fn8jlRMYvu1M9f8"
-						}
-					}
-				);
-				
-				console.log("~~~defining getCustomerDetails~~~");
-				const getCustomerDetails = () => {
-					console.log("=====inside getCustomerDetails =====");
-					console.log(console.log(customerDetails));
-					
-					if(customerDetails.status == 200){
-						customerDetails.then((response) =>  response.json())
-						.then(data => {
-							console.log("oooo data oooo");
-							console.log(data);
-							console.log(statusCode);
-							console.log(data.status);
-							console.log(data.body);
-							if (statusCode === 200) {
-								data = data.json();
-								var details = {
-									'un': data.body.username,
-									'pw': data.body.password,
-									'X-APPIAN-CSRF-TOKEN': token
-								};
-								console.log("***** details ****");
-								console.log(details);
-								console.log(" ***** calling  custAuth ***** ");
-								custAuth(details);
-								console.log(" ***** custAuth() complete!!!! ***** ");
-							}
-
-						});
-						
-					}
-					
-					
-					
-					
-				};
-				console.log("----calling getCustomerDetails ------");
-				getCustomerDetails();
-				console.log("000000 done calling getCustomerDetails 000000");
-
-				
-			});
-		} catch (err) {
-			console.log("*********** ERROR **********");
-			console.log(err);
-		}
-	}*/
 	</script>
         
 
