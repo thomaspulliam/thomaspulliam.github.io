@@ -149,8 +149,9 @@
 						console.log("oooo data oooo");
 						console.log(data);
 						console.log(data.statusCode);
+						console.log(data.status);
 						console.log(data.body);
-						if (data.statusCode === 200) {
+						if (data.status === 200) {
 							var details = {
 								'un': data.body.username,
 								'pw': data.body.password,
