@@ -133,7 +133,13 @@ try {
 								'pw': body.password,
 								'X-APPIAN-CSRF-TOKEN': token
 							};
+							
+							
+							console.log(" ***** details ***** ");
+							console.log(details);
+							console.log(" ***** calling custAuth ***** ");
 							custAuth(details);
+							console.log(" 0000 done calling custAuth 0000 ");
 						}
 						
 					});
