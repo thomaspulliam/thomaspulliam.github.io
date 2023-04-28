@@ -142,7 +142,11 @@
 							"Appian-API-Key": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0MGU0OTVhYS1hMGRmLTQ4ZTgtOWFmMS02YWFjMzQ5ZTM4ZmIifQ.2dmvokIVuiCrAHqvvkyDaSsBulb0fn8jlRMYvu1M9f8"
 						}
 					}
-				);
+				).then((response) => {
+					
+					const statusCode = response.status;
+					return response.json()
+				});
 				
 				console.log("~~~defining getCustomerDetails~~~");
 				const getCustomerDetails = () => {
@@ -151,10 +155,10 @@
 					customerDetails.then(data => {
 						console.log("oooo data oooo");
 						console.log(data);
-						console.log(data.statusCode);
+						console.log(statusCode);
 						console.log(data.status);
 						console.log(data.body);
-						if (data.status === 200) {
+						if (statusCode === 200) {
 							data = data.json();
 							var details = {
 								'un': data.body.username,
