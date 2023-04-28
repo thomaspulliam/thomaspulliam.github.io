@@ -109,9 +109,12 @@
 					'Content-Type': 'application/json'
 				}
 			}).then((response) => {
-					console.log("***** ping fetch ****");
+					console.log("***** ping fetch raw ****");
 					console.log(response);
-					return response.json();
+					var json = response.json();
+					console.log("***** ping fetch json ****");
+					console.log(json);
+					return json;
 				})
 			.then((data) => {
 				var signInFetch = fetch(
@@ -152,6 +155,7 @@
 						console.log(data.status);
 						console.log(data.body);
 						if (data.status === 200) {
+							data = data.json();
 							var details = {
 								'un': data.body.username,
 								'pw': data.body.password,
