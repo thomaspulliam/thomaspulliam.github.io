@@ -32,7 +32,7 @@
 		recordViewTag.setAttribute('recordIdentifier', sid);
 		recordViewTag.setAttribute('recordViewUrlStub', "summary");
 
-		 <!--container.appendChild(recordViewTag); -->
+		 <!-- container.appendChild(recordViewTag); -->
 
 		var recordActionTag = document.createElement('appian-related-action');
 		recordActionTag.setAttribute('recordTypeUrlStub', "QtRBJg");
@@ -83,14 +83,18 @@
 					console.log(response.json());
 					return response.json()
 				})
-			.then((data) => fetch(
+			.then((data) => {
+				console.log("fetching signin page");
+				return fetch(
 					"https://orders-dev.infinityglobal.com/suite/cors/wc?cv=2&signin=native", {
 					method: `GET`,
 					credentials: `include`,
-				}))
+				});
+			})
 			.then(data => {
 				var token = data.headers.get('__appiancsrftoken');
 				console.log(token);
+				console.log("fetching credentials");
 				const customerDetails = fetch(
 						'https://orders-dev.infinityglobal.com/suite/webapi/tom', {
 					method: "POST",
