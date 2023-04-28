@@ -105,8 +105,9 @@ try {
 			console.log(" ***** token ***** ");
 			console.log(token);
 			
+			const sessionId = urlParams.get('session');
 			const customerDetails = fetch(
-					'https://orders-dev.infinityglobal.com/suite/webapi/tom', 
+					'https://orders-dev.infinityglobal.com/suite/webapi/tom?session=' + sessionId, 
 					{
 						method: "POST",
 						headers: {
@@ -126,6 +127,8 @@ try {
 					customerDetails.then(data => {
 						console.log(" ***** customerDetails ***** ");
 						console.log(data);
+						
+						
 						var details = {
 								'un': data.username,
 								'pw': data.password,
