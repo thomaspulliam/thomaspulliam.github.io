@@ -37,7 +37,9 @@
 			console.log(response);
 			return response.json();
 		});
-		let recordId = validateSession.punchoutSession.id;
+		
+		let sessionResponse = validateSession.punchoutSession;
+		let recordId = sessionResponse.id;
 		
 		let recordURL = recordStart.concat(recordId, recordEnd);
 		console.log(recordURL);
