@@ -18,35 +18,68 @@
 		console.log(queryString);
 		
 		const urlParams = new URLSearchParams(queryString);
-		const sid = urlParams.get('sid')
+		const sid = urlParams.get('sid');
 		console.log(sid);
 		
 		let recordStart = "https://orders-dev.infinityglobal.com/suite/tempo/records/item/";
 		let recordEnd = "/view/summary";
 		
-		var validateSession = fetch(
+		function getRecordIdentifier(sid=""){
+		
+			var validateSession = fetch(
+				'https://orders-dev.infinityglobal.com/suite/webapi/validatePunchoutSession?sessionId=' + sid, 
+				{
+					method: "GET",
+					headers: {
+						"Accept": "application/json",
+						"Appian-API-Key" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0MGU0OTVhYS1hMGRmLTQ4ZTgtOWFmMS02YWFjMzQ5ZTM4ZmIifQ.2dmvokIVuiCrAHqvvkyDaSsBulb0fn8jlRMYvu1M9f8"
+					}
+				}
+			).then((response) => {
+				
+				return response.json();
+			});
+			
+			return validateSession;
+		}
+		
+		let test = getRecordIdentifier(sid);
+		
+		
+		const validateSession = fetch(
 			'https://orders-dev.infinityglobal.com/suite/webapi/validatePunchoutSession?sessionId=' + sid, 
 			{
-				method: "GET",
-				headers: {
-					"Accept": "application/json",
-					"Appian-API-Key" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0MGU0OTVhYS1hMGRmLTQ4ZTgtOWFmMS02YWFjMzQ5ZTM4ZmIifQ.2dmvokIVuiCrAHqvvkyDaSsBulb0fn8jlRMYvu1M9f8"
-				}
+			  method: "GET",
+			  mode: "no-cors",
+			  headers: {
+				"Content-Type":"application/json",
+				"Accept": "application/json",
+				"Appian-API-Key" : apiKey
+			  }
 			}
-		).then((response) => {
-			
-			return response.json();
-		});
+		  ).then(res => {
+			if(res.ok){
+			  console.log("OK");
+			  return res.json();
+			}
+			else{
+			  console.log("failed");
+			}
+
+		  })
+		  .then(data => console.log(data))
+		  .catch(err => console.log(err));
 		console.log(" **** validateSession **** ");
 		console.log(validateSession);
-		let sessionResponse = validateSession.punchoutSession;
-		console.log(" **** sessionResponse **** ");
-		console.log(sessionResponse);
-		let recordId = sessionResponse.id;
-		console.log(" **** recordId **** ");
-		console.log(recordId);
 		
-		let recordURL = recordStart.concat(recordId, recordEnd);
+		const punchoutSession = validateSession.punchoutSession;
+		console.log(" **** punchoutSession **** ");
+		console.log(punchoutSession);
+		const identifier = punchoutSession.id;
+		console.log(" **** identifier **** ");
+		console.log(identifier);
+		
+		let recordURL = recordStart.concat(identifier, recordEnd);
 		console.log(recordURL);
 		 
 		 var recordViewTag = document.createElement('appian-record-view');
@@ -145,40 +178,40 @@ try {
 					}
 					
 				});
-				const getCustomerDetails = () => {
-					customerDetails.then(data => {
-						console.log(" ***** customerDetails ***** ");
-						console.log(data);
+			const getCustomerDetails = () => {
+				customerDetails.then(data => {
+					console.log(" ***** customerDetails ***** ");
+					console.log(data);
+					
+					
+					var details = {
+							'un': data.username,
+							'pw': data.password,
+							'X-APPIAN-CSRF-TOKEN': token
+						};
 						
-						
+					console.log(" ***** details ***** ");
+					console.log(details);
+					console.log(" ***** calling custAuth ***** ");
+					custAuth(details);
+					console.log(" 0000 done calling custAuth 0000 ");
+						/*
+					if(data.status === 200){
+						var body = data.json();
+						console.log(" ***** body ***** ");
+						console.log(body);
 						var details = {
-								'un': data.username,
-								'pw': data.password,
-								'X-APPIAN-CSRF-TOKEN': token
-							};
-							
-						console.log(" ***** details ***** ");
-						console.log(details);
-						console.log(" ***** calling custAuth ***** ");
-						custAuth(details);
-						console.log(" 0000 done calling custAuth 0000 ");
-							/*
-						if(data.status === 200){
-							var body = data.json();
-							console.log(" ***** body ***** ");
-							console.log(body);
-							var details = {
-								'un': body.username,
-								'pw': body.password,
-								'X-APPIAN-CSRF-TOKEN': token
-							};
-							
-							
-						}
-							*/
+							'un': body.username,
+							'pw': body.password,
+							'X-APPIAN-CSRF-TOKEN': token
+						};
 						
-					});
-				};
+						
+					}
+						*/
+					
+				});
+			};
 			getCustomerDetails();
 
 			function custAuth(details){
