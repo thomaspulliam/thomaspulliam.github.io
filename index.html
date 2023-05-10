@@ -23,21 +23,34 @@
 		
 		let recordStart = "https://orders-dev.infinityglobal.com/suite/tempo/records/item/";
 		let recordEnd = "/view/summary";
-		 
-		let recordURL = recordStart.concat(sid, recordEnd);
+		
+		var validateSession = fetch(
+			'https://orders-dev.infinityglobal.com/suite/webapi/validatePunchoutSession?sessionId=' + sid, 
+			{
+				method: "POST",
+				headers: {
+					"Accept": "application/json",
+					"Appian-API-Key" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0MGU0OTVhYS1hMGRmLTQ4ZTgtOWFmMS02YWFjMzQ5ZTM4ZmIifQ.2dmvokIVuiCrAHqvvkyDaSsBulb0fn8jlRMYvu1M9f8"
+				}
+			}
+		);
+		let sessionResponse = validateSession.json();
+		let recordId = sessionResponse.punchoutSession.id;
+		
+		let recordURL = recordStart.concat(recordId, recordEnd);
 		console.log(recordURL);
 		 
 		 var recordViewTag = document.createElement('appian-record-view');
 		 recordViewTag.setAttribute('recordTypeUrlStub', "ZJaCNg");
-		 recordViewTag.setAttribute('recordIdentifier', sid);
+		 recordViewTag.setAttribute('recordIdentifier', recordId);
 		 recordViewTag.setAttribute('recordViewUrlStub', "summary");
 		
 		container.appendChild(recordViewTag);
 		
-		var recordActionTag = document.createElement('appian-related-action');
-		 recordActionTag.setAttribute('recordTypeUrlStub', "ZJaCNg");
-		 recordActionTag.setAttribute('recordIdentifier', sid);
-		 recordActionTag.setAttribute('processModelUuid', "af4eb356-b426-4dcb-be78-49d29343bbef");
+		<!-- var recordActionTag = document.createElement('appian-related-action'); -->
+		 <!-- recordActionTag.setAttribute('recordTypeUrlStub', "ZJaCNg"); -->
+		 <!-- recordActionTag.setAttribute('recordIdentifier', sid); -->
+		 <!-- recordActionTag.setAttribute('processModelUuid', "af4eb356-b426-4dcb-be78-49d29343bbef"); -->
 		<!-- container.appendChild(recordActionTag);-->
 	 
 	 </script>
