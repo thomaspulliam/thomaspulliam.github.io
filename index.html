@@ -79,32 +79,20 @@
 				const identifier = punchoutSession.id;
 				console.log(" **** identifier **** ");
 				console.log(identifier);
+
+
+				var recordViewTag = document.createElement('appian-record-view');
+				recordViewTag.setAttribute('recordTypeUrlStub', "ZJaCNg");
+				recordViewTag.setAttribute('recordIdentifier', identifier);
+				recordViewTag.setAttribute('recordViewUrlStub', "summary");
 				
-				return identifier;
-				
+				container.appendChild(recordViewTag);
 			  })
 			  .catch(err => console.log(err))
 		};
 		
-		const recordId = validateSession();
-		console.log(" **** recordId **** ");
-		console.log(recordId);
 		
-		let recordURL = recordStart.concat(recordId, recordEnd);
-		console.log(recordURL);
-		 
-		 var recordViewTag = document.createElement('appian-record-view');
-		 recordViewTag.setAttribute('recordTypeUrlStub', "ZJaCNg");
-		 recordViewTag.setAttribute('recordIdentifier', recordId);
-		 recordViewTag.setAttribute('recordViewUrlStub', "summary");
 		
-		container.appendChild(recordViewTag);
-		
-		<!-- var recordActionTag = document.createElement('appian-related-action'); -->
-		 <!-- recordActionTag.setAttribute('recordTypeUrlStub', "ZJaCNg"); -->
-		 <!-- recordActionTag.setAttribute('recordIdentifier', sid); -->
-		 <!-- recordActionTag.setAttribute('processModelUuid', "af4eb356-b426-4dcb-be78-49d29343bbef"); -->
-		<!-- container.appendChild(recordActionTag);-->
 	 
 	 </script>
                   
