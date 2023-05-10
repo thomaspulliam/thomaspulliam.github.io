@@ -34,12 +34,17 @@
 				}
 			}
 		).then((response) => {
-			console.log(response);
+			
 			return response.json();
 		});
-		
+		console.log(" **** validateSession **** ");
+		console.log(validateSession);
 		let sessionResponse = validateSession.punchoutSession;
+		console.log(" **** sessionResponse **** ");
+		console.log(sessionResponse);
 		let recordId = sessionResponse.id;
+		console.log(" **** recordId **** ");
+		console.log(recordId);
 		
 		let recordURL = recordStart.concat(recordId, recordEnd);
 		console.log(recordURL);
