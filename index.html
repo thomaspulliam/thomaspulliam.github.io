@@ -47,39 +47,49 @@
 		let test = getRecordIdentifier(sid);
 		
 		
-		const validateSession = fetch(
-			'https://orders-dev.infinityglobal.com/suite/webapi/validatePunchoutSession?sessionId=' + sid, 
-			{
-			  method: "GET",
-			  headers: {
-				"Content-Type":"application/json",
-				"Accept": "application/json",
-				"Appian-API-Key" : apiKey
-			  }
-			}
-		  ).then(res => {
-			if(res.ok){
-			  console.log("OK");
-			  return res.json();
-			}
-			else{
-			  console.log("failed");
-			}
+		const validateSession = () =>  {
+			fetch(
+				'https://orders-dev.infinityglobal.com/suite/webapi/validatePunchoutSession?sessionId=' + sid, 
+				{
+				  method: "GET",
+				  headers: {
+					"Content-Type":"application/json",
+					"Accept": "application/json",
+					"Appian-API-Key" : apiKey
+				  }
+				}
+			  ).then(res => {
+				if(res.ok){
+				  console.log("OK");
+				  return res.json();
+				}
+				else{
+				  console.log("failed");
+				}
 
-		  })
-		  .then(data => console.log(data))
-		  .catch(err => console.log(err));
-		console.log(" **** validateSession **** ");
-		console.log(validateSession);
+			  })
+			  .then(data => {
+				console.log(" **** validateSession **** ");
+				console.log(data);
+				
+				const punchoutSession = data.punchoutSession;
+				console.log(" **** punchoutSession **** ");
+				console.log(punchoutSession);
+				
+				const identifier = punchoutSession.id;
+				console.log(" **** identifier **** ");
+				console.log(identifier);
+				
+				return identifier;
+				
+			  })
+			  .catch(err => console.log(err));
 		
-		const punchoutSession = validateSession.punchoutSession;
-		console.log(" **** punchoutSession **** ");
-		console.log(punchoutSession);
-		const identifier = punchoutSession.id;
-		console.log(" **** identifier **** ");
-		console.log(identifier);
+		const recordId = validateSession();
+		console.log(" **** recordId **** ");
+		console.log(recordId);
 		
-		let recordURL = recordStart.concat(identifier, recordEnd);
+		let recordURL = recordStart.concat(recordId, recordEnd);
 		console.log(recordURL);
 		 
 		 var recordViewTag = document.createElement('appian-record-view');
