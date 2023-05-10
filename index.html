@@ -36,7 +36,7 @@
 		).then((response) => {
 			console.log(response);
 			return response.json();
-		};
+		});
 		let recordId = validateSession.punchoutSession.id;
 		
 		let recordURL = recordStart.concat(recordId, recordEnd);
